@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:p="http://www.springframework.org/schema/p"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+<bean id="ds" class="org.apache.commons.dbcp.BasicDataSource">
+<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+<property name="url" value="jdbc:mysql://localhost:3306/CLOUD21?createDatabaseIfNotExist=true"></property>
+<property name="username" value="root"></property>
+<property name="password" value="root"></property>
+</bean>
+
+<bean id="mysessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+
+<property name="dataSource" ref="ds"></property>
+
+<property name="annotatedClasses">
+<list>
+<value>
+com.pojo.DataOwnerPojo
+</value>
+<value>
+com.pojo.DataUserPojo
+</value>
+<value>
+com.pojo.FileUploadPojo
+</value>
+<value>
+com.pojo.RequestTablePojo
+</value>
+<value>
+com.pojo.RequestTablePojo_Owner
+</value>
+<value>
+com.pojo.PermissionPojo
+</value>
+<value>
+com.pojo.UserRevocationPojo
+</value>
+</list>
+</property>
+
+<property name="hibernateProperties">
+<props>
+<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+<prop key="hibernate.hbm2ddl.auto">update</prop>
+<prop key="hibernate.show_sql">true</prop>
+</props>
+</property>
+
+</bean>
+
+ <bean id="template" class="org.springframework.orm.hibernate3.HibernateTemplate">
+ <property name="sessionFactory" ref="mysessionFactory"></property>
+ </bean>
+
+<bean id="DAO" class="com.DAO.Controller_DaoClass">
+<property name="template" ref="template"></property>
+</bean>
+
+</beans>
